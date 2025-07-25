@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String @unique  // required
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  price Float
+  description String? // Optional, Prisma will allow "null". When using this model in TypeScript, Prisma will treat description as string | null
+  sale Boolean @default(false)
+  availability Availability @default(IN_STOCK)
+}
+
+enum Availability {
+  IN_STOCK
+  OUT_OF_STOCK
+  PRE_ORDER
+}
+// 12min
