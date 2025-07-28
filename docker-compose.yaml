@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    container_name: app-container
+    ports:
+      - '3000:3000'
+    volumes: # utile que en dev
+      - .:/app
+      - /app/node_modules
+    depends_on: # Il indique que le service app dépend du service postgres, au niveau de l’ordre de démarrage.
+      - postgres # Docker va démarrer postgres en premier, puis app.
+    env_file:
+      - .env
+
+  postgres:
+    container_name: postgres-container
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data # Créer un volume postgres-db(en bas) sur notre disque, Monter ce volume dans le conteneur PostgreSQL à /var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin-container
+    image: dpage/pgadmin4
+    ports:
+      - '8080:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-db:
