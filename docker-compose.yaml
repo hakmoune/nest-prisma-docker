@@ -10,7 +10,7 @@ services:
     depends_on: # Il indique que le service app dépend du service postgres, au niveau de l’ordre de démarrage.
       - postgres # Docker va démarrer postgres en premier, puis app.
     env_file:
-      - .env
+      - .env.docker
 
   postgres:
     container_name: postgres-container
@@ -35,6 +35,9 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
       - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
 
 volumes:
   postgres-db:
+  pgadmin_data:
