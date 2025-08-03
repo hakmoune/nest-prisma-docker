@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'generated/prisma'; // Les types générés par Prisma pour assurer que les données envoyées sont bien valides.
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProductDto } from './dto/create-product.dto';
 
 // Un service dans NestJS contient la logique métier (business logic).
 // Exemple : accéder à la base de données, traiter des données, etc.
@@ -8,7 +9,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createProductDto: Prisma.ProductCreateInput) {
+  //create(createProductDto: Prisma.ProductCreateInput) {
+  create(createProductDto: CreateProductDto) {
     return this.prisma.product.create({
       data: createProductDto,
     });
