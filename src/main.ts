@@ -4,7 +4,9 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
   //app.setGlobalPrefix('api/v1'); // All routes will be prefixed with /api/v1/products/id
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Ignore les propriétés non définies dans les DTO, Supprime automatiquement le champ "unexpectedField" car il n’est pas dans le DTO.
@@ -12,6 +14,10 @@ async function bootstrap() {
       transform: true, // transforme le JSON en classe DTO
     }),
   );
+  
+  // Enable CORS with default settings (allows all origins).
+  app.enableCors();
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
